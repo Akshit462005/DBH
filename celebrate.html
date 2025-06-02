@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Celebrate</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            background: url('celebration.png') no-repeat center center fixed;
+            background-size: cover;
+            font-family: Arial, sans-serif;
+        }
+        
+        .container {
+            text-align: center;
+            position: relative;
+            height: 100vh;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .text {
+            color: #b1091a;
+            font-size: 6.0rem;
+            font-weight: 200;
+            font-style: italic;
+            position: absolute;
+            top: 25%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0;
+            transition: opacity 2s ease-in-out, transform 2s ease-in-out;
+            white-space: nowrap;
+            letter-spacing: 2px;
+            padding: 15px;
+            -webkit-text-stroke: 2px #5e0202;
+        }
+        #text1, #text2, #text3, #text5{
+            color: #ce2e41;
+            font-weight: 600;
+            background-color: #bea2a772;
+            width: 100%;
+        }
+
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 50px;
+            padding: 60px;
+            max-width: 1800px;
+            width: 100%;
+            justify-content: space-between;
+            opacity: 0; /* Initially hidden for fade-in */
+            transition: opacity 1.5s ease-in-out; /* Fade-in transition for the grid */
+        }
+        
+        .photo-container {
+            position: relative;
+            aspect-ratio: 2/3;
+            overflow: hidden;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+             justify-content: space-between;
+        }
+        
+        .photo {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            transition: opacity 1.5s ease-in-out;
+            border-radius: 20px;
+        }
+        
+        .photo.active {
+            opacity: 1;
+        }
+        
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .photo-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 15px;
+                padding: 15px;
+            }
+            /* Adjust message box for medium screens */
+            #birthdayMessage {
+                width: 90% !important; /* Use !important to override inline style if necessary */
+                padding: 25px !important;
+            }
+            #birthdayMessage h1 {
+                font-size: 2.5rem !important;
+            }
+            #birthdayMessage p {
+                font-size: 1.1rem !important;
+            }
+            #specialButton {
+                padding: 15px 30px !important;
+                font-size: 1.5rem !important;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .photo-grid {
+                grid-template-columns: 1fr;
+                gap: 10px;
+                padding: 10px;
+            }
+            /* Adjust message box for small screens (e.g., iPhone 14) */
+            #birthdayMessage {
+                width: 95% !important; /* Fullest reasonable width */
+                padding: 20px !important;
+                max-height: 75vh !important; /* Ensure it doesn't take too much vertical space */
+            }
+            #birthdayMessage h1 {
+                font-size: 2rem !important; /* Smaller heading */
+                margin-bottom: 15px !important;
+            }
+            #birthdayMessage p {
+                font-size: 1rem !important; /* Smaller paragraph text */
+                line-height: 1.5 !important;
+            }
+            #specialButton {
+                width: 80% !important;
+                padding: 15px 20px !important;
+                font-size: 1.3rem !important;
+                top: 75% !important; /* Adjust position if needed */
+            }
+        }
+    </style>
+</head>
+<body>
+     <audio src="ABCD.mp3" autoplay loop></audio>
+     <div class="photo-grid">
+        <div class="photo-container">
+            <img class="photo active" src="IMG_1.jpg" alt="Portrait 1">
+            <img class="photo" src="IMG_4.jpg" alt="Portrait 4">
+            <img class="photo" src="IMG_7.jpg" alt="Portrait 7">
+        </div>
+        <div class="photo-container">
+            <img class="photo active" src="IMG_2.jpg" alt="Portrait 2">
+            <img class="photo" src="IMG_5.jpg" alt="Portrait 5">
+            <img class="photo" src="IMG_8.JPG" alt="Portrait 8">
+        </div>
+        <div class="photo-container">
+            <img class="photo active" src="IMG_3.JPG" alt="Portrait 3">
+            <img class="photo" src="IMG_6.jpg" alt="Portrait 6">
+            <img class="photo" src="IMG_9.jpg" alt="Portrait 9">
+        </div>
+    </div>
+
+    <script>
+        let currentPhotoIndex = 0;
+        const photoContainers = document.querySelectorAll('.photo-container');
+        const photoGrid = document.querySelector('.photo-grid');
+
+        let cyclesCompleted = 0;
+        const maxCycles = 1; // Only 1 cycle
+        let photoCycleIntervalId;
+
+        function cyclePhotos() {
+            let numPhotosInContainer = 0; // To store the number of photos, assuming it's consistent
+
+            photoContainers.forEach(container => {
+                const photos = container.querySelectorAll('.photo');
+                if (photos.length === 0) return;
+                if (numPhotosInContainer === 0) numPhotosInContainer = photos.length; // Set once from the first container processed
+
+                // Deactivate current photo (which is at the global currentPhotoIndex)
+                if (photos[currentPhotoIndex]) {
+                    photos[currentPhotoIndex].classList.remove('active');
+                }
+
+                // Determine next photo to activate in this container
+                const photoIndexToActivateInContainer = (currentPhotoIndex + 1) % photos.length;
+
+                setTimeout(() => {
+                    if (photos[photoIndexToActivateInContainer]) {
+                        photos[photoIndexToActivateInContainer].classList.add('active');
+                    }
+                }, 100); // Small delay for smooth transition
+            });
+
+            // Update global currentPhotoIndex for the next cyclePhotos call
+            if (numPhotosInContainer > 0) {
+                currentPhotoIndex = (currentPhotoIndex + 1) % numPhotosInContainer;
+
+                // A full cycle of images is completed when currentPhotoIndex wraps back to 0
+                if (currentPhotoIndex === 0) {
+                    cyclesCompleted++;
+                }
+            }
+
+            if (cyclesCompleted >= maxCycles) {
+                clearInterval(photoCycleIntervalId);
+                vanishPhotosAndShowMessage();
+            }
+        }
+
+        function vanishPhotosAndShowMessage() {
+            // Make all photos inactive, they will start fading out (1.5s transition from CSS)
+            photoContainers.forEach(container => {
+                const photos = container.querySelectorAll('.photo');
+                photos.forEach(photo => {
+                    photo.classList.remove('active'); // This triggers opacity transition to 0
+                });
+            });
+
+            // After the photos' fade-out transition (1.5s), hide the grid and show message
+            setTimeout(() => {
+                if (photoGrid) {
+                    photoGrid.style.display = 'none';
+                }
+                showBirthdayMessage();
+            }, 1500); // Corrected: Match the .photo opacity transition duration (1.5s)
+        }
+
+        function showBirthdayMessage() {
+            let messageBox = document.getElementById('birthdayMessage');
+            const fullParagraphText = 'Happy Birthday Garima May God bless you with endless happiness, success, and peace. I don’t know What i will achieve from this Cllg but I am Very happy that a Found a sister like you that always stand, motivate and correct me when I was wrong . You are truly a blesssing in this world so innocent , cute ,caring,heart whelming and forgive the person and stand with him when he need you even the person has done worst with you.The purest soul I meet . You have filled colors to my Cllg life That little fights ,enjoy,chit chatting ,roaming in campus and many more rememberable Memories that are always store in my heart When you get angry i like to irritate you more and the reaction you give Haha . That smiles on your faces suits and no one has rights to steal it always keeps smiling I know right you get stressed sometime about small small things where career ,family or some silly things but please yaar apna dhyaan rakha kar don’t take stress It’s life and everything will go on smoth as usually and If by an chance there is problem at any stage of the life weather We are in connection or not you have rights to call me at anytime and I promise I will be there for you Remember You are not alone at any stage of life and your brother is stand behind you in every situation .I am very lucky to find a friend and a sister in only one person . Your Success is my success I will be more happy on your achievements than my. I know every time you celebrate your birthday as an average day but it is not a regular day it’s most special day we will celebrate it together.So on your special day , I just want to remind you how much you matter to the people around you especially your family . Even your family is lucky to have you as their child . Mata Bas hamesha khush reh and medicines time to time leh kar jaldi jaldi yeh sari phaltu ki bimaar bhga de .Happy Birthday once again, Mata . And Aaj dieting chod kar Sab kuch kha lio chup chap kahi nahi tu Ek din mai Aur Moti hoti .Okay Moti ? Ohh Moti nahi Mutki Hahah';
+
+            if (!messageBox) {
+                messageBox = document.createElement('div');
+                messageBox.id = 'birthdayMessage'; // ID is used by CSS media queries
+                // Base styles are set here, media queries will override them
+                messageBox.style.position = 'absolute';
+                messageBox.style.top = '50%';
+                messageBox.style.left = '50%';
+                messageBox.style.transform = 'translate(-50%, -50%)';
+                messageBox.style.backgroundColor = 'rgba(255, 228, 235, 0.95)';
+                messageBox.style.padding = '40px'; 
+                messageBox.style.borderRadius = '20px';
+                messageBox.style.boxShadow = '0 15px 35px rgba(0,0,0,0.25)';
+                messageBox.style.textAlign = 'center';
+                messageBox.style.opacity = '0';
+                messageBox.style.transition = 'opacity 1.2s ease-in-out';
+                messageBox.style.zIndex = '1000';
+                messageBox.style.maxWidth = '90%'; // Max width for very large screens
+                messageBox.style.width = '1500px'; // Default width for large screens
+                messageBox.style.maxHeight = '80vh'; 
+                messageBox.style.overflowY = 'auto'; 
+
+                const heading = document.createElement('h1');
+                // Base styles are set here, media queries will override them
+                heading.textContent = 'Happy Birthday Garima!'; 
+                heading.style.color = '#e91e63';
+                heading.style.marginBottom = '25px';
+                heading.style.fontSize = '3.5rem'; 
+                heading.style.fontWeight = 'bold'; 
+                heading.style.fontStyle = 'italic';
+
+                const paragraph = document.createElement('p');
+                paragraph.id = 'birthdayParagraph';
+                // Base styles are set here, media queries will override them
+                paragraph.textContent = ''; 
+                paragraph.style.fontSize = '1.3rem';
+                paragraph.style.color = '#555';
+                paragraph.style.lineHeight = '1.6';
+                paragraph.style.textAlign = 'justify';
+
+                messageBox.appendChild(heading);
+                messageBox.appendChild(paragraph);
+                document.body.appendChild(messageBox);
+            }
+
+            const paragraphElement = document.getElementById('birthdayParagraph');
+
+            // Fade in the message box
+            setTimeout(() => {
+                messageBox.style.opacity = '1';
+
+                // Start typewriter animation for the paragraph
+                let i = 0;
+                const speed = 50; // Milliseconds per character
+
+                function typeWriter() {
+                    if (i < fullParagraphText.length) {
+                        paragraphElement.textContent += fullParagraphText.charAt(i);
+                        i++;
+                        setTimeout(typeWriter, speed);
+                    } else {
+                        // Typewriter finished
+                        // Wait 2 seconds, then fade out message box
+                        setTimeout(() => {
+                            messageBox.style.opacity = '0'; 
+                            // After message box fade out transition (1.2s), remove it and show button
+                            setTimeout(() => {
+                                if (messageBox.parentNode) {
+                                    messageBox.parentNode.removeChild(messageBox);
+                                }
+                                showSpecialButton();
+                            }, 1200); // Match messageBox opacity transition (1.2s)
+                        }, 2000); // 2-second delay after typewriter finishes
+                    }
+                }
+                typeWriter(); // Start the animation
+
+            }, 50); // Short delay to ensure DOM update and transition triggers for message box fade-in
+        }
+
+        function showSpecialButton() {
+            const button = document.createElement('button');
+            button.id = 'specialButton'; // ID is used by CSS media queries
+            button.textContent = 'Specially for you';
+            
+            // Base styles are set here, media queries will override them
+            button.style.position = 'absolute';
+            button.style.top = '80%';
+            button.style.left = '50%';
+            button.style.transform = 'translate(-50%, -50%)';
+            button.style.padding = '20px 40px';
+            button.style.fontSize = '1.8rem';
+            button.style.color = 'white';
+            button.style.backgroundColor = '#e91e63';
+            button.style.border = 'none';
+            button.style.borderRadius = '10px';
+            button.style.cursor = 'pointer';
+            button.style.boxShadow = '0 8px 20px rgba(0,0,0,0.2)';
+            button.style.opacity = '0';
+            button.style.transition = 'opacity 1.2s ease-in-out';
+            button.style.zIndex = '1000';
+
+            document.body.appendChild(button);
+
+            // Fade in the button
+            setTimeout(() => {
+                button.style.opacity = '1';
+            }, 50); // Short delay for transition
+
+            button.onclick = function() {
+                window.location.href = 'special.html'; // Redirect to the new page
+            };
+        }
+
+        // Initial 3-second delay, then fade in photo grid, then start cycling
+        setTimeout(() => {
+            if (photoGrid) {
+                photoGrid.style.opacity = '1';
+            }
+
+            // After the photo grid's fade-in duration (1.5s as per new CSS), start photo cycling
+            setTimeout(() => {
+                currentPhotoIndex = 0; 
+                photoCycleIntervalId = setInterval(cyclePhotos, 4000); 
+            }, 1500); // Corrected: Wait for grid fade-in (1.5s) to complete
+        }, 3000);
+    </script>
+</body>
+</html>
+
+

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Special Surprise!</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            background: url('celebration.png') no-repeat center center fixed;
+            background-size: cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden; /* To prevent scrollbars */
+            font-family: Arial, sans-serif; /* Added for consistency */
+        }
+        video {
+            max-width: 85%; /* Adjusted for better viewing */
+            max-height: 85vh; /* Adjusted for better viewing */
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5); /* Enhanced shadow */
+            outline: none; 
+        }
+
+        /* Responsive design for special.html */
+        @media (max-width: 768px) {
+            video {
+                max-width: 90%;
+                max-height: 70vh;
+            }
+        }
+
+        @media (max-width: 480px) {
+            video {
+                max-width: 95%; /* More width for small screens */
+                max-height: 60vh; /* Adjust height */
+                border-radius: 10px; /* Slightly smaller border radius */
+            }
+        }
+    </style>
+</head>
+<body>
+    <video src="Birthday_Vid.mp4" autoplay controls></video>
+    <!-- The 'autoplay' attribute will attempt to play with sound. 
+         If the browser blocks autoplay with sound (common without prior user interaction),
+         the 'controls' will allow the user to unmute and play. -->
+</body>
+</html>

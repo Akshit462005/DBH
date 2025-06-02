@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Birthday</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            background: url('home.png') no-repeat center center fixed;
+            background-size: cover;
+            font-family: Arial, sans-serif;
+            backdrop-filter: blur(9px); 
+        }
+        .container {
+            text-align: center;
+            position: relative;
+            height: 100vh;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .text {
+            color: #b1091a;
+            font-size: 6.0rem;
+            font-weight: 200;
+            font-style: italic;
+            position: absolute;
+            top: 25%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0;
+            transition: opacity 2s ease-in-out, transform 2s ease-in-out;
+            white-space: nowrap;
+            letter-spacing: 2px;
+            padding: 15px;
+            -webkit-text-stroke: 2px #5e0202;
+        }
+        #text1, #text2, #text3, #text5{
+            color: #ce2e41;
+            font-weight: 600;
+            background-color: #bea2a772;
+            width: 100%;
+        }
+        .vid {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+        }
+
+        .vid video {
+            border-radius: 25px; 
+            overflow: hidden; 
+        }
+
+        .text4 {
+            color: #b1091a;
+            font-size: 5.0rem;
+            font-weight: 200;
+            font-style: italic;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0;
+            transition: opacity 2s ease-in-out, transform 2s ease-in-out;
+            white-space: nowrap;
+            letter-spacing: 2px;
+            padding: 20px;
+            -webkit-text-stroke: 2px #5e0202;
+        }
+         #text4  {
+            color: #ce2e41;
+            font-weight: 600;
+            background-color: #bea2a772;
+            width: 100%;
+        }
+        .img {
+            position: absolute;
+            top: 78%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+        }
+
+        /* Responsive design for paragraph.html */
+        @media (max-width: 768px) {
+            .text,
+            .text4 {
+                font-size: 3.5rem;
+                -webkit-text-stroke-width: 1.5px;
+            }
+            .vid video {
+                max-width: 90%;
+                max-height: 40vh;
+            }
+            .img img {
+                height: 200px;
+            }
+            #img2 img {
+                height: 300px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .text,
+            .text4 {
+                font-size: 2.2rem; /* Significantly reduce font size */
+                -webkit-text-stroke-width: 1px;
+                padding: 10px;
+            }
+            #text1, #text2, #text3, #text5,
+            #text4 {
+                width: 95%; /* Allow text to wrap if needed by not forcing 100% */
+                white-space: normal; /* Allow wrapping */
+            }
+
+            .vid video {
+                max-width: 90%;
+                max-height: 35vh; /* Adjust video size */
+            }
+            .img {
+                top: 75%;
+            }
+            .img img {
+                height: 150px; /* Smaller flower */
+            }
+            #img2 {
+                top: 80%; /* Adjust position of door */
+            }
+            #img2 img {
+                height: 250px; /* Smaller door */
+            }
+        }
+    </style>
+</head>
+<body>
+        <audio src="tune.mp3" autoplay loop></audio>
+    <div class="container">
+        <div class="text" id="text1">Garima</div>
+        <div class="text" id="text2">It's Your Birthday</div>
+        <div class="vid" id="vid">
+            <video id="birthdayVideo" src="Birthday_Vid.mp4" autoplay muted></video>
+        </div>
+        <div class="text" id="text3">Rather than sending a casual text
+        </div>
+        <div class="text4" id="text4">
+            I wanted to honor how truly special you are.
+        </div>
+         <div class="img" id="img"><img src="flower.png" height="250px"></div>
+        <div class="text" id="text5">Lets Go Out <br> Celebrate with Others</div>
+         <div class="img" id="img2"><a href="celebrate.html"><img src="door.png" height="350px"></a></div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', async function () {
+            const text1 = document.getElementById('text1');
+            const text2 = document.getElementById('text2');
+            const text3 = document.getElementById('text3');
+            const vid = document.getElementById('vid');
+            const video = document.getElementById('birthdayVideo');
+            const text4 = document.getElementById('text4');
+             const img = document.getElementById('img');
+             const text5 = document.getElementById('text5');
+             const img2 = document.getElementById('img2');
+            // Helper function to handle delays
+            const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+            // Sequentially show and hide text elements
+            async function showTextSequence() {
+               text1.style.opacity = '1';
+                await delay(3000);
+                text1.style.opacity = '0';
+
+                text2.style.opacity = '1';
+                await delay(3000);
+                text2.style.opacity = '0';
+
+                vid.style.opacity = '1'; // Fade in the video
+                video.play(); // Ensure the video starts playing
+
+                // Wait for the video to finish playing
+                await new Promise((resolve) => {
+                    video.onended = resolve;
+                });
+
+                vid.style.opacity = '0'; // Fade out the video
+                await delay(1000);
+                text3.style.opacity = '1';
+                await delay(3000);
+                text4.style.opacity = '1';
+                await delay(3000);
+                img.style.opacity = '1';
+                await delay(3000);
+                text3.style.opacity = '0';
+                text4.style.opacity = '0';
+                img.style.opacity = '0';            
+                await delay(1000);
+                text5.style.opacity = '1';
+                await delay(3000);
+                img2.style.opacity = '1';
+                await delay(3000);
+            }
+
+            // Start the text sequence
+            showTextSequence();
+        });
+    </script>
+</body>
+</html>

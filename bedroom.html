@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bedroom</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            background: url('home.png') no-repeat center center fixed;
+            background-size:cover;
+            font-family: Arial, sans-serif;
+        }
+
+        .Gif {
+            position: absolute;
+            top: 85%;
+            left: 48%;
+            transform: translate(-50%, -50%);
+            transition: opacity 1s ease-in-out;
+        }
+
+        /* Responsive design for bedroom.html */
+        @media (max-width: 768px) {
+            .Gif img {
+                height: 110px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .Gif {
+                left: 50%; /* Center more accurately */
+                top: 80%; /* Adjust vertical position */
+            }
+            .Gif img {
+                height: 100px; /* Smaller GIF */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="Gif" id="gif"><a href="paragraph.html"><img src="gift.gif" height="130px"></div>
+</body>
+</html>
